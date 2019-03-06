@@ -94,7 +94,7 @@ let test_recv _ctx =
   print_xchg "RECVD:" recvd;
   assert_equal (View.cardinal view) (view_len - 1);
   assert_equal (View.cardinal sent) xchg_len;
-  let view2 = merge_recvd view view_len recvd my_nid my_data distance in
+  let view2 = merge_recvd view view_len recvd xchg_len my_nid my_data distance in
   print_view "VIEW AFTER:" view2;
   assert_equal (View.cardinal view2) view_len;
   assert_equal (View.mem "ME" view2) false;

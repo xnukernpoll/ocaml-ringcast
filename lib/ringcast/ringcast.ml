@@ -124,11 +124,20 @@ let make_response view view_str xchg_len rnid rndata recvd my_nid my_data distan
                 uview in
   closest uview rnid rndata xchg_len distance
 
+(** truncate [view] to [len] nodes *)
+let rec truncate ?(view2=View.empty) view len =
+  if len <= 0 || View.is_empty view then
+    view
+  else
+    let (nid, node) = View.choose view in
+    truncate ~view2:(View.add nid node view2) view (len - 1)
+
 (** merge nodes received during an exchange with current view,
     [my_nid] is the key associated with this node *)
-let merge_recvd view view_len recvd my_nid my_data distance =
+let merge_recvd view view_len recvd xchg_len my_nid my_data distance =
   let recvd = zero_age recvd in
   let recvd = View.remove my_nid recvd in
+  let recvd = truncate recvd xchg_len in
   let uview = View.union
                (* prefer nodes from view *)
                 (fun _nid node _node_rnd -> Some node)

@@ -38,7 +38,8 @@ let init_xchg t xnid xdata sent view =
   | (Some nid, Some data) ->
      let%lwt recvd = t.send_cb t nid data sent in
      let%lwt recvd = t.recv_cb t t.my_nid t.my_data t.view recvd in
-     t.view <- merge_recvd view t.view_len recvd t.my_nid t.my_data t.distance;
+     t.view <- merge_recvd view t.view_len recvd t.xchg_len
+                 t.my_nid t.my_data t.distance;
      let%lwt _ = t.view_cb t t.my_nid t.my_data t.view in
      Lwt.return t.view
   | _ ->
@@ -63,5 +64,6 @@ let recv t rnid rdata recvd =
                t.my_nid t.my_data t.distance in
   let%lwt _ = t.send_cb t rnid rdata sent in
   let%lwt recvd = t.recv_cb t t.my_nid t.my_data t.view recvd in
-  t.view <- merge_recvd t.view t.view_len recvd t.my_nid t.my_data t.distance;
+  t.view <- merge_recvd t.view t.view_len recvd t.xchg_len
+              t.my_nid t.my_data t.distance;
   Lwt.return t.view

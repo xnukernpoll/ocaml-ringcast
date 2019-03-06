@@ -1,10 +1,14 @@
-(** RingCast *)
+(** RingCast: P2P hybrid dissemination protocol *)
 
 type 'data node =
   {
     age: int;
     data: 'data;
   }
+(** a node's profile:
+    - [age]: age of this node profile, incremented after each gossip round
+    - [data]: application-specific data associated with the node
+ *)
 
 module View : module type of Map.Make(String)
 
@@ -34,7 +38,7 @@ val make_exchange :
   -> (View.key -> 'data -> View.key -> 'data -> int)
   -> (View.key option * 'data option * 'data node View.t * 'data node View.t)
 (** [view view_str my_nid my_data xchg_len distance]
-    retrieve a node to exchange with and a list of nodes to send
+    selects a node to exchange with and a list of nodes to send
     from the union of [view] and [view_str]
     - [view] is the current view of this node
     - [view_str] is the current view of the topology management service (VICINITY)
@@ -64,8 +68,10 @@ val make_response :
 (** [view view_str xchg_len rnid rndata recvd my_nid my_data distance]
     responds to a gossip exchange initiated by [(rnid, rndata)]
 
-    selects a list of nodes for the response
+    returns [xchg_len] nodes closest to [rnid]
+    according to the [distance] function
     from the union of [view] and [view_str]
+    to be sent as a response to [rnid]
 
     - [view] is the current view of this node
     - [view_str] is the current view of the topology management service (VICINITY)
@@ -79,11 +85,12 @@ val merge_recvd :
   'data node View.t
   -> int
   -> 'data node View.t
+  -> int
   -> View.key
   -> 'data
   -> (View.key -> 'data -> View.key -> 'data -> int)
   -> 'data node View.t
-(** [merge_recvd view view_len recvd my_nid my_data distance]
+(** [merge_recvd view view_len recvd xchg_len my_nid my_data distance]
     merges received nodes during an exchange to the current [view]
 
     - [view] is the current view of this node
