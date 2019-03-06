@@ -1,0 +1,13 @@
+(tests
+ (names test_ringcast_lwt_one test_ringcast_lwt_two)
+ (package ringcast-lwt)
+ (libraries
+  ringcast
+  ringcast-lwt
+  lwt
+  oUnit
+ )
+ (preprocess
+  (pps lwt_ppx)
+ )
+)

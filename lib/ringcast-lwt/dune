@@ -1,0 +1,12 @@
+(library
+ (name ringcast_lwt)
+ (public_name ringcast-lwt)
+ (modules ringcast_lwt)
+ (libraries
+  ringcast
+  lwt
+  lwt.unix
+ )
+ (preprocess
+  (pps lwt_ppx))
+)

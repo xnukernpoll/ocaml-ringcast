@@ -1,0 +1,23 @@
+opam-version: "2.0"
+name: "ringcast"
+synopsis: "RingCast: P2P hybrid (probabilistic/deterministic) dissemination"
+maintainer: "TG x Thoth <*@tg-x.net>"
+authors: ["TG x Thoth <*@tg-x.net>"]
+tags: [ "p2p" "multicast" "protocol" "ring" ]
+license: "MPL-2.0"
+homepage: "https://github.com/p2pcollab/ocaml-ringcast"
+doc: "https://p2pcollab.github.io/doc/ocaml-ringcast/ringcast/"
+dev-repo: "git+https://github.com/p2pcollab/ocaml-ringcast.git"
+bug-reports: "https://github.com/p2pcollab/ocaml-ringcast/issues"
+depends:
+[
+  "dune" {build & >= "1.0.0"}
+  "ounit" {with-test}
+]
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+]
+run-test: [
+  ["dune" "runtest" "-p" name "-j" jobs]
+]
