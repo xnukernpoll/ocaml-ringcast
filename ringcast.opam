@@ -6,7 +6,7 @@ authors: ["TG x Thoth <*@tg-x.net>"]
 tags: [ "p2p" "multicast" "protocol" "ring" ]
 license: "MPL-2.0"
 homepage: "https://github.com/p2pcollab/ocaml-ringcast"
-doc: "https://p2pcollab.github.io/doc/ocaml-ringcast/ringcast/"
+doc: "https://p2pcollab.github.io/doc/ringcast/"
 dev-repo: "git+https://github.com/p2pcollab/ocaml-ringcast.git"
 bug-reports: "https://github.com/p2pcollab/ocaml-ringcast/issues"
 depends:
