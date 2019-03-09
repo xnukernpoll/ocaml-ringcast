@@ -4,6 +4,7 @@
  (modules ringcast_lwt)
  (libraries
   ringcast
+  cstruct
   lwt
   lwt.unix
  )

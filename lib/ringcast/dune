@@ -2,4 +2,5 @@
  (name ringcast)
  (public_name ringcast)
  (modules ringcast)
+ (libraries psq)
 )

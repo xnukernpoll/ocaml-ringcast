@@ -5,6 +5,7 @@
   ringcast
   ringcast-lwt
   lwt
+  cstruct
   oUnit
  )
  (preprocess
