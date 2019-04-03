@@ -165,7 +165,7 @@ let make_exchange view view_ext xchg_len my_nid my_ndata distance =
       Some onode.data,
       (let uview = View.union (* prefer nodes from view *)
                      (* TODO: compare profile versions instead *)
-                     (fun _nid node _node_rnd -> Some node)
+                     (fun _nid node _xnode -> Some node)
                      (add my_nid my_ndata view)
                      view_ext in
        closest uview onid onode.data xchg_len distance),
@@ -177,7 +177,7 @@ let make_exchange view view_ext xchg_len my_nid my_ndata distance =
 let make_response view view_ext xchg_len rnid rndata recvd my_nid my_ndata distance =
   let uview = add my_nid my_ndata view in
   let uview = View.union (* prefer nodes from view *)
-                (fun _nid node _node_rnd -> Some node)
+                (fun _nid node _xnode -> Some node)
                 uview view_ext in
   let uview = View.filter (* remove recvd nodes *)
                 (fun nid _node -> not @@ View.mem nid recvd)
@@ -200,7 +200,7 @@ let merge_recvd view view_len recvd xchg_len my_nid my_ndata distance =
   let recvd = truncate recvd xchg_len in
   let uview = View.union
                (* prefer nodes from view *)
-                (fun _nid node _node_rnd -> Some node)
+                (fun _nid node _rnode -> Some node)
                 view recvd in
   closest uview my_nid my_ndata view_len distance
 
