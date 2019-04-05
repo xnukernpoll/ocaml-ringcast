@@ -142,3 +142,36 @@ val fwd_targets :
     - [my_ndata] is the data associated with this node
     - [distance] is a function that returns the distance of two nodes
  *)
+
+(** Subscriptions *)
+module Sub : sig
+
+  (** Subscribed rings *)
+  module Rings : module type of Map.Make(String)
+
+  (** [empty] contains no subscriptions *)
+  val empty :
+    'data node View.t Rings.t
+
+  (** [add rid view] adds a ring with ID [rid] and [view] to the subscriptions  *)
+  val add :
+    string
+    -> 'data node View.t
+    -> 'data node View.t Rings.t
+    -> 'data node View.t Rings.t
+
+  (** [remove rid view] removes a ring from the subscriptions *)
+  val remove :
+    string
+    -> 'data node View.t Rings.t
+    -> 'data node View.t Rings.t
+
+  (** [intersect t node is_member] returns a list of common rings with [node]
+
+      [is_member node rid ring] determines whether a [node] is member of [ring] with ID [rid] *)
+  val intersect :
+    'data node View.t Rings.t
+    -> 'data node
+    -> ('data node -> string -> 'data node View.t -> bool)
+    -> (string * 'data node View.t) list
+end

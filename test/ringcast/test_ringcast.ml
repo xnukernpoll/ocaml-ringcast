@@ -108,12 +108,34 @@ let test_recv _ctx =
   let (rnid, _rdata) = View.choose recvd in
   assert_equal (View.mem rnid resp) false
 
+type node_data = {
+    id : string;
+    sub : string list;
+  }
+
+let test_sub _ctx =
+  let sub = Sub.empty in
+  let my_nid = "a" in
+  let my_data = { id = my_nid; sub = [ "A"; "B"; "C"] } in
+  let ringA = add my_nid my_data View.empty in
+  let ringB = View.empty in
+  let sub = Sub.add "A" ringA sub in
+  let sub = Sub.add "B" ringB sub in
+  let my_node = View.find my_nid ringA in
+  let c = Sub.intersect sub my_node
+            (fun node rid ring ->
+              node.data.id = my_nid && rid = "A" && ring = ringA)
+  in
+  assert_equal c [("A", ringA)]
+
+
 let suite =
   "suite">:::
     [
       "add">:: test_add;
       "exchange">:: test_xchg;
       "receive">:: test_recv;
+      "sub">:: test_sub;
     ]
 
 let () =

@@ -281,3 +281,25 @@ let fwd_targets view seen msgid fanout rnid rndata my_nid my_ndata distance =
         len = seen.len
       } in
     (targets, seen)
+
+module Sub = struct
+
+  module Rings = Map.Make(String)
+
+  let empty =
+    Rings.empty
+
+  let add rid ring t =
+    Rings.add rid ring t
+
+  let remove rid t =
+    Rings.remove rid t
+
+  let intersect t node is_member =
+    Rings.fold
+      (fun rid ring common ->
+        if is_member node rid ring
+        then (rid, ring) :: common
+        else common)
+      t []
+end
